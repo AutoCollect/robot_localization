@@ -63,7 +63,7 @@ namespace RobotLocalization
     base_link_frame_id_("base_link"),
     gps_frame_id_(""),
     utm_zone_(0),
-    world_frame_id_("odom"),
+    world_frame_id_("map"),
     transform_timeout_(ros::Duration(0)),
     tf_listener_(tf_buffer_)
   {
@@ -334,6 +334,9 @@ namespace RobotLocalization
                                              tf2::toMsg(cartesian_world_transform_));
         cartesian_transform_stamped.transform.translation.z = (zero_altitude_ ?
                                                            0.0 : cartesian_transform_stamped.transform.translation.z);
+
+        ROS_ERROR("p: %s -> c: %s", cartesian_transform_stamped.header.frame_id.c_str(), cartesian_transform_stamped.child_frame_id.c_str());
+
         cartesian_broadcaster_.sendTransform(cartesian_transform_stamped);
       }
     }
